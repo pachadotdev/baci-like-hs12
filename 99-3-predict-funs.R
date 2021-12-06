@@ -4,14 +4,36 @@ impute_flows <- function(y) {
   dexp <- data_partitioned(y) %>%
     filter_flow_impute(y = y, f = "export")
 
+  dreexp <- data_partitioned(y) %>%
+    filter_flow_impute(y = y, f = "re-export") %>%
+    select(-year)
+
+  dexp <- dexp %>%
+    left_join(dreexp, by = c("reporter_iso", "partner_iso", "commodity_code")) %>%
+    substract_re_imp_exp()
+
+  rm(dreexp); gc()
+
   dimp <- data_partitioned(y) %>%
     filter_flow_impute(y = y, f = "import") %>%
     select(-year)
+
+  dreimp <- data_partitioned(y) %>%
+    filter_flow_impute(y = y, f = "re-import") %>%
+    select(-year)
+
+  dimp <- dimp %>%
+    left_join(dreimp, by = c("reporter_iso", "partner_iso", "commodity_code")) %>%
+    substract_re_imp_exp()
+
+  rm(dreimp); gc()
 
   dexp <- dexp %>%
     join_flows(dimp)
 
   rm(dimp); gc()
+
+  beepr::beep(2)
 
   # convert HS02 to HS12 ----
 
@@ -43,7 +65,11 @@ impute_flows <- function(y) {
         netweight_kg_imp = sum(netweight_kg_imp, na.rm = T)
       ) %>%
       ungroup()
+
+    beepr::beep(2); beepr::beep(2)
   }
+
+  # impute data ----
 
   dexp <- dexp %>%
     reported_by()
@@ -138,6 +164,8 @@ impute_flows <- function(y) {
   dexp %>%
     group_by(year) %>%
     write_dataset(dout)
+
+  beepr::beep(2); beepr::beep(2); beepr::beep(2)
 }
 
 filter_flow_impute <- function(d, y, f) {
@@ -154,6 +182,23 @@ filter_flow_impute <- function(d, y, f) {
     select(year, reporter_iso, partner_iso, commodity_code, trade_value_usd,
            qty_unit, qty, netweight_kg) %>%
     collect()
+}
+
+substract_re_imp_exp <- function(d) {
+  d %>%
+    mutate_if(is.numeric, function(x) ifelse(is.na(x), 0, x)) %>%
+    group_by(reporter_iso, partner_iso, commodity_code) %>%
+    mutate(
+      trade_value_usd = max(trade_value_usd.x - trade_value_usd.y, 0),
+      qty = case_when(
+        qty_unit.x == qty_unit.y ~ max(qty.x - qty.y, 0),
+        TRUE ~ qty.x
+      ),
+      netweight_kg = max(netweight_kg.x - netweight_kg.y, 0),
+      qty_unit = qty_unit.x
+    ) %>%
+    ungroup() %>%
+    select(-ends_with(".x"), -ends_with(".y"))
 }
 
 reported_by <- function(d) {
