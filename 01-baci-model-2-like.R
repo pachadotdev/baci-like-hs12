@@ -94,9 +94,6 @@ if (!file.exists(fout)) {
   # version) and from Geodist. In the next version of BACI the more recent Gravity
   # dataset will be used.
 
-  # After removing influential rows twice, I get a result very similar to model II
-  # in the article
-
   dfit <- dfit %>%
     select(log_cif_fob_unit_ratio, log_dist, log_dist_sq, log_uv_exp, contig,
              landlocked_reporter, landlocked_partner, year, cif_fob_weights)
@@ -126,7 +123,7 @@ if (!file.exists(fout)) {
 
   # 5) We reestimate the equation without these outliers. The results of the
   # regression without outliers are used to predict a FOB value for all CIF values
-  # reporter by importers.
+  # reported by importers.
 
   fit2 <- fit(); gc()
 
