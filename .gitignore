@@ -6,3 +6,4 @@ raw_dataset_2002_2020/
 imputed_dataset_2002_2020/
 temp/
 ols_model.rds
+model_analysis.rds
