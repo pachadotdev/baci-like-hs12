@@ -1,39 +1,58 @@
 year,flag,n,m
-2002,"exports, no change",6654690,0.9168214750395264
-2002,"imports, divided by cif/fob ratio",603746,0.08317852496047358
-2003,"exports, no change",7095732,0.8985531178159574
-2003,"imports, divided by cif/fob ratio",801110,0.10144688218404269
-2004,"exports, no change",7670804,0.9130711661398707
-2004,"imports, divided by cif/fob ratio",730298,0.0869288338601293
-2005,"exports, no change",7785306,0.8851833297821272
-2005,"imports, divided by cif/fob ratio",1009828,0.11481667021787274
-2006,"exports, no change",8093998,0.8806300934899943
-2006,"imports, divided by cif/fob ratio",1097146,0.11936990651000572
-2007,"exports, no change",8340802,0.8875886598785078
-2007,"imports, divided by cif/fob ratio",1056346,0.11241134012149218
-2008,"exports, no change",8635660,0.8894967882710348
-2008,"imports, divided by cif/fob ratio",1072818,0.11050321172896514
-2009,"exports, no change",8607701,0.8745355519483323
-2009,"imports, divided by cif/fob ratio",1234896,0.12546444805166768
-2010,"exports, no change",9036953,0.8930249908962758
-2010,"imports, divided by cif/fob ratio",1082532,0.10697500910372415
-2011,"exports, no change",9246234,0.8860434723362304
-2011,"imports, divided by cif/fob ratio",1189184,0.11395652766376968
-2012,"exports, no change",9382855,0.9025140835444891
-2012,"imports, divided by cif/fob ratio",1013498,0.09748591645551088
-2013,"exports, no change",10144880,0.9048836107004622
-2013,"imports, divided by cif/fob ratio",1066374,0.09511638929953777
-2014,"exports, no change",10328642,0.9079422427100146
-2014,"imports, divided by cif/fob ratio",1047238,0.09205775728998548
-2015,"exports, no change",10695851,0.9039132569227528
-2015,"imports, divided by cif/fob ratio",1136978,0.09608674307724721
-2016,"exports, no change",10685169,0.9083251336007403
-2016,"imports, divided by cif/fob ratio",1078426,0.09167486639925974
-2017,"exports, no change",11006849,0.9074091920897104
-2017,"imports, divided by cif/fob ratio",1123124,0.09259080791028966
-2018,"exports, no change",11063604,0.907978829482793
-2018,"imports, divided by cif/fob ratio",1121266,0.092021170517207
-2019,"exports, no change",11209814,0.9199855360444988
-2019,"imports, divided by cif/fob ratio",974958,0.08001446395550117
-2020,"exports, no change",10548612,0.9290501568143567
-2020,"imports, divided by cif/fob ratio",805578,0.07094984318564336
+2002,"exports, no change",6732270,0.7913463656536539
+2002,"imports, divided by 1 + model constant due to NA/Inf values",3848,4.523141251071719e-4
+2002,"imports, divided by cif/fob ratio",1771244,0.20820132022123897
+2003,"exports, no change",7180208,0.7575802784987009
+2003,"imports, divided by 1 + model constant due to NA/Inf values",8246,8.700314777093208e-4
+2003,"imports, divided by cif/fob ratio",2289364,0.2415496900235898
+2004,"exports, no change",7765672,0.7861490996866204
+2004,"imports, divided by 1 + model constant due to NA/Inf values",7676,7.770712552879516e-4
+2004,"imports, divided by cif/fob ratio",2104768,0.21307382905809163
+2005,"exports, no change",7875036,0.7323358608026996
+2005,"imports, divided by 1 + model constant due to NA/Inf values",8628,8.023574504301558e-4
+2005,"imports, divided by cif/fob ratio",2869648,0.2668617817468702
+2006,"exports, no change",8184730,0.7237636100344447
+2006,"imports, divided by 1 + model constant due to NA/Inf values",8706,7.698587478096254e-4
+2006,"imports, divided by cif/fob ratio",3115132,0.27546653121774567
+2007,"exports, no change",8397542,0.7387479940200199
+2007,"imports, divided by 1 + model constant due to NA/Inf values",11034,9.706822979887329e-4
+2007,"imports, divided by cif/fob ratio",2958686,0.2602813236819913
+2008,"exports, no change",8685662,0.7489947333773354
+2008,"imports, divided by 1 + model constant due to NA/Inf values",10358,8.932062344035998e-4
+2008,"imports, divided by cif/fob ratio",2900406,0.250112060388261
+2009,"exports, no change",8652009,0.7228317430411016
+2009,"imports, divided by 1 + model constant due to NA/Inf values",10722,8.957690576705009e-4
+2009,"imports, divided by cif/fob ratio",3306872,0.2762724879012278
+2010,"exports, no change",9083295,0.7608682814174659
+2010,"imports, divided by 1 + model constant due to NA/Inf values",12872,0.0010782316899765581
+2010,"imports, divided by cif/fob ratio",2841898,0.23805348689255754
+2011,"exports, no change",9292362,0.7469692733635442
+2011,"imports, divided by 1 + model constant due to NA/Inf values",28428,0.0022851932052559763
+2011,"imports, divided by cif/fob ratio",3119296,0.25074553343119976
+2012,"exports, no change",9382855,0.8037295236610476
+2012,"imports, divided by 1 + model constant due to NA/Inf values",29796,0.0025523068284658106
+2012,"imports, divided by cif/fob ratio",2261494,0.19371816951048665
+2013,"exports, no change",10144880,0.8524786877807142
+2013,"imports, divided by 1 + model constant due to NA/Inf values",22846,0.0019197593368318006
+2013,"imports, divided by cif/fob ratio",1732724,0.14560155288245402
+2014,"exports, no change",10328642,0.8662822764026895
+2014,"imports, divided by 1 + model constant due to NA/Inf values",26452,0.0022185780836826317
+2014,"imports, divided by cif/fob ratio",1567858,0.13149914551362785
+2015,"exports, no change",10695851,0.8777025569351408
+2015,"imports, divided by 1 + model constant due to NA/Inf values",23010,0.0018882028026640974
+2015,"imports, divided by cif/fob ratio",1467330,0.12040924026219514
+2016,"exports, no change",10685169,0.8795122648658886
+2016,"imports, divided by 1 + model constant due to NA/Inf values",22720,0.0018701172305045422
+2016,"imports, divided by cif/fob ratio",1441082,0.11861761790360681
+2017,"exports, no change",11006849,0.8860142023416308
+2017,"imports, divided by 1 + model constant due to NA/Inf values",23414,0.0018847479904218676
+2017,"imports, divided by cif/fob ratio",1392618,0.1121010496679474
+2018,"exports, no change",11063604,0.8775029040960644
+2018,"imports, divided by 1 + model constant due to NA/Inf values",24816,0.001968265681603204
+2018,"imports, divided by cif/fob ratio",1519634,0.12052883022233249
+2019,"exports, no change",11209814,0.8791074644755484
+2019,"imports, divided by 1 + model constant due to NA/Inf values",24886,0.001951635268965078
+2019,"imports, divided by cif/fob ratio",1516658,0.11894090025548651
+2020,"exports, no change",10548612,0.8424483060008741
+2020,"imports, divided by 1 + model constant due to NA/Inf values",31910,0.0025484419603724064
+2020,"imports, divided by cif/fob ratio",1940854,0.15500325203875356

@@ -73,7 +73,7 @@ data_partitioned <- function(y) {
     )
 }
 
-join_flows <- function(dexp, dimp, dreexp, dreimp) {
+join_flows <- function(dexp, dimp) {
   dexp %>%
     full_join(dimp, by = c("reporter_iso" = "partner_iso",
                            "partner_iso" = "reporter_iso",

@@ -29,7 +29,8 @@ impute_flows <- function(y) {
   rm(dreimp); gc()
 
   dexp <- dexp %>%
-    join_flows(dimp)
+    join_flows(dimp) %>%
+    mutate(year = y)
 
   rm(dimp); gc()
 
@@ -104,9 +105,6 @@ impute_flows <- function(y) {
         select(year, reporter_iso = iso3_digit_alpha, trade_flow, valuation) %>%
         drop_na() %>%
         distinct(year, reporter_iso, trade_flow, .keep_all = T) %>%
-        # group_by(year, reporter_iso, trade_flow, valuation) %>%
-        # count() %>%
-        # filter(n > 1) %>%
         pivot_wider(names_from = trade_flow, values_from = valuation) %>%
         rename(exports_report = Export, imports_report = Import)
     ) %>%
@@ -122,6 +120,45 @@ impute_flows <- function(y) {
 
   gc()
 
+  reporter_0_exp <- dexp %>%
+    group_by(reporter_iso) %>%
+    summarise(trade_value_usd_exp_imputed = sum(trade_value_usd_exp_imputed, na.rm = T)) %>%
+    filter(trade_value_usd_exp_imputed == 0) %>%
+    select(reporter_iso) %>%
+    pull()
+
+  if (length(reporter_0_exp) > 0) {
+    dexp_0 <- dexp %>%
+      filter(reporter_iso %in% reporter_0_exp)
+
+    dexp <- dexp %>%
+      filter(!reporter_iso %in% reporter_0_exp)
+
+    dexp_0 <- dexp_0 %>%
+      mutate(
+        exports_value = ifelse(
+          is.finite(trade_value_usd_imp_fob),
+          "imports, divided by cif/fob ratio",
+          "imports, divided by 1 + model constant due to NA/Inf values"),
+        trade_value_usd_exp_imputed = ifelse(
+          is.finite(trade_value_usd_imp_fob),
+          trade_value_usd_imp_fob,
+          trade_value_usd_imp / (1 + as.numeric(ols_model$fit$coefficients[1])))
+      )
+
+    dexp <- bind_rows(dexp, dexp_0)
+    rm(dexp_0)
+  }
+
+  reporter_0_exp <- dexp %>%
+    group_by(reporter_iso) %>%
+    summarise(trade_value_usd_exp_imputed = sum(trade_value_usd_exp_imputed, na.rm = T)) %>%
+    filter(trade_value_usd_exp_imputed == 0) %>%
+    select(reporter_iso) %>%
+    pull()
+
+  stopifnot(length(reporter_0_exp) == 0)
+
   dexp <- dexp %>%
     select(year, reporter_iso, partner_iso, commodity_code, trade_value_usd_exp = trade_value_usd_exp_imputed, exports_value)
 
@@ -130,6 +167,8 @@ impute_flows <- function(y) {
 
   dexp <- dexp %>%
     full_join(dimp)
+
+  rm(dimp); gc()
 
   dexp <- dexp %>%
     select(year, reporter_iso, partner_iso, commodity_code, trade_value_usd_exp, trade_value_usd_imp, flag = exports_value) %>%
@@ -148,18 +187,9 @@ impute_flows <- function(y) {
 
   unique(dexp$flag)
 
-  rows_with_imputation <<- rows_with_imputation %>%
-    bind_rows(
-      dexp %>%
-        group_by(flag) %>%
-        count() %>%
-        ungroup() %>%
-        mutate(m = n / sum(n)) %>%
-        mutate(year = y) %>%
-        select(year, everything())
-    )
-
-  rm(dimp); gc()
+  # dexp %>%
+  #   filter(reporter_iso == "ven") %>%
+  #   summarise_if(is.numeric, sum, na.rm = T)
 
   dexp %>%
     group_by(year) %>%
@@ -187,17 +217,13 @@ filter_flow_impute <- function(d, y, f) {
 substract_re_imp_exp <- function(d) {
   d %>%
     mutate_if(is.numeric, function(x) ifelse(is.na(x), 0, x)) %>%
-    group_by(reporter_iso, partner_iso, commodity_code) %>%
+    mutate_if(is.numeric, function(x) ifelse(!is.finite(x), NA, x)) %>%
     mutate(
-      trade_value_usd = max(trade_value_usd.x - trade_value_usd.y, 0),
-      qty = case_when(
-        qty_unit.x == qty_unit.y ~ max(qty.x - qty.y, 0),
-        TRUE ~ qty.x
-      ),
-      netweight_kg = max(netweight_kg.x - netweight_kg.y, 0),
+      trade_value_usd = pmax(trade_value_usd.x - trade_value_usd.y, 0, na.rm = T),
+      qty = pmax(qty.x - qty.y, 0, na.rm = T),
+      netweight_kg = pmax(netweight_kg.x - netweight_kg.y, 0, na.rm = T),
       qty_unit = qty_unit.x
     ) %>%
-    ungroup() %>%
     select(-ends_with(".x"), -ends_with(".y"))
 }
 

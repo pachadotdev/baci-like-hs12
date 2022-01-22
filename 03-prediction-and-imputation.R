@@ -11,11 +11,11 @@ source("99-1-clean-funs.R")
 # source("99-2-model-funs.R")
 source("99-3-predict-funs.R")
 
-ols_model <- readRDS("~/UN ESCAP/baci-like-hs12/ols_model.rds")
+ols_model <- readRDS("ols_model.rds")
+ols_model$fit$model <- NULL
+gc()
 
 dout <- "imputed_dataset_2002_2020"
-
-rows_with_imputation <- tibble()
 
 map(
   # 2015,
@@ -26,9 +26,33 @@ map(
   }
 )
 
+dexp <- open_dataset("imputed_dataset_2002_2020",
+                     partitioning = c("year"))
+
+rows_with_imputation <- tibble()
+
+map(
+  2002:2020,
+  function(y) {
+    rows_with_imputation <<- rows_with_imputation %>%
+      bind_rows(
+        dexp %>%
+          filter(year == paste0("year=", y)) %>%
+          select(flag) %>%
+          collect() %>%
+          group_by(flag) %>%
+          count() %>%
+          ungroup() %>%
+          mutate(m = n / sum(n)) %>%
+          mutate(year = y) %>%
+          select(year, everything())
+      )
+  }
+)
+
 readr::write_csv(rows_with_imputation, "rows_with_imputation_per_year.csv")
 
-# open_dataset(dout, partitioning = "year") %>%
+# dexp %>%
 #   filter(year == "year=2015", reporter_iso == "chl", partner_iso == "chn") %>%
 #   collect() %>%
 #   summarise(trade_value_usd_exp = sum(trade_value_usd_exp, na.rm = T))
